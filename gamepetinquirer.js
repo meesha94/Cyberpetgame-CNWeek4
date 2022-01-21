@@ -29,6 +29,7 @@ const starter = async () => {
   console.log(choices)
   if (answers.type === "Winnie the Pooh"){
     pet = new Bear (answers.name,2022, answers.home)
+    choices = "bear"
   } else if (answers.type === "Tigger"){
       pet = new Tigger (answers.name,2022, answers.home)
   } else {
@@ -39,10 +40,7 @@ const starter = async () => {
   
 }
 
-const loopingQuestion = async () => {
-  // logic here to end the recursion
-  let answers = await inquirer.prompt(
-    [
+let bearQuestions =  [
       {
         type: "rawlist",
         name: "action",
@@ -50,20 +48,41 @@ const loopingQuestion = async () => {
         choices: ["Eat", "Drink", "Sleep", "Honey", "Nothing"],
       },
     ]
-  )
+
+let tigerQuestions = [
+   {
+        type: "rawlist",
+        name: "action",
+        message: `What do you want to do with your pet?`,
+        choices: ["Eat", "Play", "Bath", "Nothing"],
+      },
+]
+
+let inquirerQs
+
+const loopingQuestion = async () => {
+  if (choices === "bear") {
+    inquirerQs = bearQuestions
+  } else if (choices === "tiger") {
+    inquirerQs = tigerQuestions
+  }
+  // logic here to end the recursion
+  let answers = await inquirer.prompt(inquirerQs)
+  
   console.log(choices)
   if (answers.action === "Drink") {
-         Bear.drink()
-  } else if (answers.type === "Eat") {
-        Bear.eat()
-  } else if (answers.type === "Sleep"){
-       Bear.sleep()
-  } else if (answers.type === "Honey"){
-       Bear.honey()
-  } else if (answers.type === "Nothing") {
-       Bear.nothing()
-  };
-
+       pet.drink()
+  } else if (answers.action === "Eat") {
+       pet.eat()
+  } else if (answers.action === "Sleep"){
+       pet.sleep()
+  } else if (answers.action === "Honey"){
+       pet.honey()
+  } else if (answers.action === "Nothing") {
+       pet.nothing()
+  } else if (answers.action === "Bath") {
+      pet.bath()
+  }
   //loopingQuestion()
 }
 
